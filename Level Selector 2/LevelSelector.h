@@ -7,6 +7,7 @@
 #include "DataClasses.h"
 
 
+
 namespace Processes 
 {
 	inline void Field(DataClasses::FieldData data)
@@ -73,15 +74,7 @@ enum Encounters
 namespace GameLoop
 {
 	//variant of function objects
-	inline std::pair<std::variant<std::function<void(DataClasses::FieldData)>,std::function<void(DataClasses::MenuData)>,std::function<void(DataClasses::CombatData)>,std::function<void(DataClasses::PauseData)>>,
-		std::variant
-		<
-		DataClasses::FieldData, 
-		DataClasses::MenuData, 
-		DataClasses::CombatData, 
-		DataClasses::PauseData
-		>
-		> LevelSelector(int enc, int lvl)
+	inline std::pair<DataClasses::FunctionVariant,DataClasses::DataVariant> LevelSelector(int enc, int lvl)
 	{
 		
 		switch (enc)
@@ -91,8 +84,7 @@ namespace GameLoop
 			if (lvl == 1)
 			{
 				DataClasses::FieldData FData;
-				std::variant<std::function<void(DataClasses::FieldData)>,std::function<void(DataClasses::MenuData)>,std::function<void(DataClasses::CombatData)>,
-					std::function<void(DataClasses::PauseData)>> ModeFn = Processes::Field;
+				DataClasses::FunctionVariant ModeFn = Processes::Field;
 				auto Mode = std::make_pair(ModeFn, FData);
 				return Mode; // rename the processes to reflect the modes the game will be in
 			}
@@ -100,9 +92,7 @@ namespace GameLoop
 			if (lvl == 2)
 			{
 				DataClasses::MenuData MData;
-				std::variant<std::function<void(DataClasses::FieldData)>,std::function<void(DataClasses::MenuData)>,
-					std::function<void(DataClasses::CombatData)>,
-					std::function<void(DataClasses::PauseData)>> ModeFn = Processes::Menu;
+				DataClasses::FunctionVariant ModeFn = Processes::Menu;
 				auto Mode = std::make_pair(ModeFn, MData);
 				return Mode; // rename the processes to reflect the modes the game will be in
 			}
@@ -110,13 +100,7 @@ namespace GameLoop
 			if (lvl == 3)
 			{
 				DataClasses::CombatData CData;
-				std::variant
-					<
-					std::function<void(DataClasses::FieldData)>,
-					std::function<void(DataClasses::MenuData)>,
-					std::function<void(DataClasses::CombatData)>,
-					std::function<void(DataClasses::PauseData)>
-					> ModeFn = Processes::Combat;
+				DataClasses::FunctionVariant ModeFn = Processes::Combat;
 				auto Mode = std::make_pair(ModeFn, CData);
 				return Mode; // rename the processes to reflect the modes the game will be in
 			}
@@ -124,12 +108,7 @@ namespace GameLoop
 			if (lvl == 4)
 			{
 				DataClasses::PauseData PData;
-				std::variant
-					<
-					std::function<void(DataClasses::FieldData)>,
-					std::function<void(DataClasses::MenuData)>,
-					std::function<void(DataClasses::CombatData)>,
-					std::function<void(DataClasses::PauseData)>> ModeFn = Processes::Pause;
+				DataClasses::FunctionVariant ModeFn = Processes::Pause;
 				auto Mode = std::make_pair(ModeFn, PData);
 				return Mode; // rename the processes to reflect the modes the game will be in
 			}
